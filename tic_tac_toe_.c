@@ -134,7 +134,7 @@ int main()
 						}
 						
 						
-						printf("_____________________\n");
+					    printf("_____________________\n");
 					    printf("|   1  |   2  |   3  |\n");
 					    printf("|   %c  |   %c  |   %c  |\n",block[0],block[1],block[2]);
 					    printf("|______|______|______|\n");
@@ -162,7 +162,7 @@ int main()
 							}
 							system("cls");
 							printf("\nWINNER OF THE ROUND IS ==> %s <==",oyuncu1);
-							printf("\nLOSER OF THE ROUND IS  ==> %s <== HA ha  LOSERRR!!!\n",oyuncu2);																					
+							printf("\nLOSER OF THE ROUND IS  ==> %s <== \n",oyuncu2);																					
 							printf("\nSCORES");
 							printf("\n%s ==> %d",oyuncu1,p1);
 							printf("\n%s ==> %d",oyuncu2,p2);
@@ -200,6 +200,7 @@ int main()
 			printf("\n%s ==> %d",oyuncu1,p1);
 			printf("\n%s ==> %d",oyuncu2,p2);
 			getch();
+		    	z++;
 			system("cls");
 	    	
 		}
@@ -223,9 +224,7 @@ else if (p1<p2){
 else if (p1=p2){
 	printf("GAME DRAW");
 }
-else {
-	printf("idk what the hell happened");
-}
+
 
     
     return 0;
