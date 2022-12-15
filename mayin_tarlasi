@@ -1,0 +1,455 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+int main(){
+
+	char kutu[11][11];
+	char gorunen_kutu[11][11];
+	int i, j,q=1, p=0,a=0 ,bosyersayaci=1 ,n=10, z=0, input_dogrulama=0, randomx, randomy, mayinsayaci=0, kalanmayin=10, bayraksayaci=10, secim, sutun, satir, bosyerisatir[100], bosyerisutun[100];
+
+	
+	
+
+	//kutuların içini bo# yapan bölüm--------
+	for (i=0;i<11;i++){
+		for (j=0;j<11;j++){
+			kutu[i][j] = '.';
+		}
+	}	
+	
+	for (i=1;i<10;i++){
+		for (j=1;j<10;j++){
+			kutu[i][j] = '-';
+		}
+	}
+	
+	for (i=1;i<10;i++){
+		for (j=1;j<10;j++){
+			gorunen_kutu[i][j] = '#';
+		}
+	}
+	
+
+	//---------------------------------------
+	
+	
+	//random mayın olu#turan bölüm-----------
+	srand(time(NULL));
+	for(i=0;i<n;i++)
+	{
+		randomy= rand() %9+1;
+		randomx= rand() %9+1;
+		
+		if (kutu[randomx][randomy] == '-')
+		{
+			kutu[randomx][randomy] ='@';
+		}
+		else
+		{
+			n++;
+		}
+		
+		
+	}
+	//----------------------------------------
+	
+	// kutuların etrafındaki bomba sayısını bulan bölüm
+	
+		for (i=1;i<10;i++){
+			for (j=1;j<10;j++){
+				if (kutu[i][j] != '@')
+				{
+					if(kutu[i+1][j] == '@'){
+						mayinsayaci++;
+					}
+					if(kutu[i-1][j] == '@'){
+						mayinsayaci++;
+					}
+					if(kutu[i][j+1] == '@'){
+						mayinsayaci++;
+					}
+					if(kutu[i][j-1] == '@'){
+						mayinsayaci++;
+					}
+					if(kutu[i+1][j-1] == '@'){
+						mayinsayaci++;
+					}
+					if(kutu[i+1][j+1] == '@'){
+						mayinsayaci++;
+					}
+					if(kutu[i-1][j+1] == '@'){
+						mayinsayaci++;
+					}
+					if(kutu[i-1][j-1] == '@'){
+						mayinsayaci++;
+					}
+					if (mayinsayaci != 0){
+						kutu[i][j] = mayinsayaci+'0';
+					}
+												
+				}
+
+				mayinsayaci=0;
+			
+			}
+		}
+	//-------------------------------------------
+	
+	
+	while (kalanmayin>0){
+	
+
+	//KULLANICIDAN INPUT ALAN BOLUM-----
+
+	while (input_dogrulama==0)
+	{
+		
+		printf("### bayrak[T] yerlestirmek icin '1'e basin.\n");
+		printf("### Acmak istediginiz kutucugu secmek icin '2'ye basin.\n\n");
+		printf("SECIM ==>");
+		scanf("%d",&secim);
+				
+		
+		
+		if (secim==1 || secim == 2)
+		{	
+			break;
+		}
+		else
+		{
+			printf("1 ya da 2'ye basin");
+		}
+
+	}
+	
+
+
+	
+	if (secim == 1)
+	{
+		while (input_dogrulama==0)
+		{
+			printf("Bayrak koymak istediginiz kutunun kordinatlarini sirasiyla sutun ve satir olucak sekilde giriniz.\n\n");
+			printf("SUTUN ==> ");
+			scanf("%d",&satir);
+			printf("\nSATIR ==> ");
+			scanf("%d",&sutun);
+		
+		
+			if (satir>=1 && satir<=9 && sutun>=1 && sutun<=9)
+			{
+				break;
+			}		
+			else
+			{
+				printf("girilen satir ve sutun degerleri [1,9] araliginda olmalidir.\n");
+				printf("degerleri tekrar giriniz.");
+			}
+			
+		}
+		
+
+	}
+	
+	if (secim == 2)
+	{
+		while (input_dogrulama==0)
+		{
+			
+			printf("Acmak istediginiz kutunun kordinatlarini sirasiyla sutun ve satir olucak sekilde giriniz.\n\n");
+			printf("SUTUN ==> ");
+			scanf("%d",&satir);
+			printf("\nSATIR ==> ");
+			scanf("%d",&sutun);
+			
+			
+			if (satir>=1 && satir<=9 && sutun>=1 && sutun<=9)
+			{
+
+				break;
+			}		
+			else
+			{
+				printf("girilen satir ve sutun degerleri [1,9] araliginda olmalidir.\n");
+				printf("degerleri tekrar giriniz.");
+			}
+			
+		}
+		
+	}
+	
+	
+	//----------------------------------
+										//KULLANICI VERİSİNİ İ#LEYEN (KUTULARI AÇAN,BAYRAK KOYAN) BÖLÜM
+	//BAYRAK KOYAN BÖLÜM
+	
+	while (secim == 1)
+	{
+		
+		if (gorunen_kutu[satir][sutun] == 'T')
+		{
+			gorunen_kutu[satir][sutun] = '#';
+			bayraksayaci++;
+			if (kutu[satir][sutun] == '@');
+			{
+				kalanmayin++;
+			} 
+			printf("\n\n\n\n BAYRAK SAYACI %d T var \n\n\n\n",bayraksayaci);
+			break;
+ 		}
+		
+		
+		if (kutu[satir][sutun] != '@' && gorunen_kutu[satir][sutun] != 'T') // else ya da if else kullanmama izin vermiyor
+		 {
+			gorunen_kutu[satir][sutun] = 'T';
+			bayraksayaci--;
+			printf("\n\n\n\n BAYRAK SAYACI %d mayin yok T yok \n\n\n\n",bayraksayaci);
+			break;
+		}
+				
+		if (kutu[satir][sutun] == '@' && gorunen_kutu[satir][sutun] != 'T'); 
+		{
+			gorunen_kutu[satir][sutun] = 'T';
+			kalanmayin--;
+			bayraksayaci--;
+			printf("\n\n\n\n BAYRAK SAYACI %d mayin var T yok \n\n\n\n",bayraksayaci);
+			break;
+		}
+
+		
+
+				
+	}
+	
+	//KUTULARI AÇAN BÖLÜM
+
+	if (secim == 2)
+	{
+		gorunen_kutu[satir][sutun] = kutu[satir][sutun];
+		
+	
+
+		
+		
+		if (gorunen_kutu[satir][sutun] == 'T')
+		{
+			printf("acmak istediginiz kutuda bayrak var kutuyu acmak icin ayni yere bayrak koyarak bayragi kaldiriniz daha sonra kutuyu aciniz.");
+		}
+		if (gorunen_kutu[satir][sutun] != 'T' && gorunen_kutu[satir][sutun] == '@')
+		{
+			kalanmayin= -99;
+		}
+		if (gorunen_kutu[satir][sutun] != 'T'&& gorunen_kutu[satir][sutun] == '-' )
+		{
+                bosyerisutun[p]=sutun;
+                bosyerisatir[p]=satir;
+                kutu[satir][sutun]=' ';
+                p++;
+                
+                
+										//BOŞ KUTULARIN KORDİNATLARINI BULAN BÖLÜM
+                while (bosyersayaci>0)
+				{
+				
+
+					if(kutu[bosyerisatir[z]+1][bosyerisutun[z]] == '-'){
+						kutu[bosyerisatir[z]+1][bosyerisutun[z]] = ' ';
+                        bosyerisatir[p]=bosyerisatir[z]+1;
+                        bosyerisutun[p]=bosyerisutun[z];
+                        p++;
+                        a++;
+					}
+					if(kutu[bosyerisatir[z]-1][bosyerisutun[z]] == '-'){
+						kutu[bosyerisatir[z]-1][bosyerisutun[z]] = ' ';
+                        bosyerisatir[p]=bosyerisatir[z]-1;
+                        bosyerisutun[p]=bosyerisutun[z];
+                        p++;
+                        a++;
+					}
+					if(kutu[bosyerisatir[z]][bosyerisutun[z]+1] == '-'){
+						kutu[bosyerisatir[z]][bosyerisutun[z]+1] = ' ';
+                        bosyerisatir[p]=bosyerisatir[z];
+                        bosyerisutun[p]=bosyerisutun[z]+1;
+                        p++;
+                        a++;
+					}
+					if(kutu[bosyerisatir[z]][bosyerisutun[z]-1] == '-'){
+						kutu[bosyerisatir[z]][bosyerisutun[z]-1] = ' ';
+                        bosyerisatir[p]=bosyerisatir[z];
+                        bosyerisutun[p]=bosyerisutun[z]-1;
+                        p++;
+                        a++;
+					}
+					if(kutu[bosyerisatir[z]+1][bosyerisutun[z]-1] == '-'){
+						kutu[bosyerisatir[z]+1][bosyerisutun[z]-1] = ' ';
+                        bosyerisatir[p]=bosyerisatir[z]+1;
+                        bosyerisutun[p]=bosyerisutun[z]-1;
+                        p++;
+                        a++;
+					}
+					if(kutu[bosyerisatir[z]+1][bosyerisutun[z]+1] == '-'){
+						kutu[bosyerisatir[z]+1][bosyerisutun[z]+1] = ' ';
+                        bosyerisatir[p]=bosyerisatir[z]+1;
+                        bosyerisutun[p]=bosyerisutun[z]+1;
+                        p++;
+                        a++;
+					}
+					if(kutu[bosyerisatir[z]-1][bosyerisutun[z]+1] == '-'){
+						kutu[bosyerisatir[z]-1][bosyerisutun[z]+1] = ' ';
+                        bosyerisatir[p]=bosyerisatir[z]-1;
+                        bosyerisutun[p]=bosyerisutun[z]+1;
+                        p++;
+                        a++;
+					}
+					if(kutu[bosyerisatir[z]-1][bosyerisutun[z]-1] == '-'){
+						kutu[bosyerisatir[z]-1][bosyerisutun[z]-1] = ' ';
+                        bosyerisatir[p]=bosyerisatir[z]-1;
+                        bosyerisutun[p]=bosyerisutun[z]-1;
+                        p++;
+                        a++;
+
+					}
+                    bosyersayaci+= a;
+                    bosyersayaci--;
+                    a=0;
+                    
+                    printf("%d\n",bosyersayaci);
+                    printf("\nbosyerisatir[%d]  == %d",z,bosyerisatir[z]);
+                    printf("\nbosyerisutun[%d]  == %d\n",z,bosyerisutun[z]); 
+                    z++;
+
+				}
+													//KORDİNATLARI BULUNAN BOŞ KUTULARI VE ETRAFINDAKİLERİ GÖRÜNÜR HALE GETİRİYOR
+				gorunen_kutu[satir][sutun]= ' ';
+				for (i=0;i<p;i++)
+				{
+										
+                    gorunen_kutu[bosyerisatir[i]+1][bosyerisutun[i]] = kutu[bosyerisatir[i]+1][bosyerisutun[i]];
+                    gorunen_kutu[bosyerisatir[i]-1][bosyerisutun[i]] = kutu[bosyerisatir[i]-1][bosyerisutun[i]];
+                    gorunen_kutu[bosyerisatir[i]][bosyerisutun[i]+1] = kutu[bosyerisatir[i]][bosyerisutun[i]+1];
+                    gorunen_kutu[bosyerisatir[i]][bosyerisutun[i]-1] = kutu[bosyerisatir[i]][bosyerisutun[i]-1];
+                    gorunen_kutu[bosyerisatir[i]+1][bosyerisutun[i]-1] =kutu[bosyerisatir[i]+1][bosyerisutun[i]-1];
+                    gorunen_kutu[bosyerisatir[i]+1][bosyerisutun[i]+1] =kutu[bosyerisatir[i]+1][bosyerisutun[i]+1];
+                    gorunen_kutu[bosyerisatir[i]-1][bosyerisutun[i]+1] =kutu[bosyerisatir[i]-1][bosyerisutun[i]+1];
+                    gorunen_kutu[bosyerisatir[i]-1][bosyerisutun[i]-1] =kutu[bosyerisatir[i]-1][bosyerisutun[i]-1];
+					gorunen_kutu[bosyerisatir[i]][bosyerisutun[i]] = ' ';
+				
+				}
+				p=0;
+				z=0;
+				bosyersayaci=1;
+				
+		}
+
+		
+		
+	}
+	
+	//-----------------------------------------------
+	
+	
+	
+	
+	
+	
+	//OYUN TABLOSU-----------------------------------
+	printf("     1      2      3      4      5       6      7      8      9\n");
+	printf("  _______________________________________________________________\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("1 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][1],gorunen_kutu[2][1],gorunen_kutu[3][1],gorunen_kutu[4][1],gorunen_kutu[5][1],gorunen_kutu[6][1],gorunen_kutu[7][1],gorunen_kutu[8][1],gorunen_kutu[9][1]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("2 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][2],gorunen_kutu[2][2],gorunen_kutu[3][2],gorunen_kutu[4][2],gorunen_kutu[5][2],gorunen_kutu[6][2],gorunen_kutu[7][2],gorunen_kutu[8][2],gorunen_kutu[9][2]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("3 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][3],gorunen_kutu[2][3],gorunen_kutu[3][3],gorunen_kutu[4][3],gorunen_kutu[5][3],gorunen_kutu[6][3],gorunen_kutu[7][3],gorunen_kutu[8][3],gorunen_kutu[9][3]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("4 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][4],gorunen_kutu[2][4],gorunen_kutu[3][4],gorunen_kutu[4][4],gorunen_kutu[5][4],gorunen_kutu[6][4],gorunen_kutu[7][4],gorunen_kutu[8][4],gorunen_kutu[9][4]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("5 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][5],gorunen_kutu[2][5],gorunen_kutu[3][5],gorunen_kutu[4][5],gorunen_kutu[5][5],gorunen_kutu[6][5],gorunen_kutu[7][5],gorunen_kutu[8][5],gorunen_kutu[9][5]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("6 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][6],gorunen_kutu[2][6],gorunen_kutu[3][6],gorunen_kutu[4][6],gorunen_kutu[5][6],gorunen_kutu[6][6],gorunen_kutu[7][6],gorunen_kutu[8][6],gorunen_kutu[9][6]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("7 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][7],gorunen_kutu[2][7],gorunen_kutu[3][7],gorunen_kutu[4][7],gorunen_kutu[5][7],gorunen_kutu[6][7],gorunen_kutu[7][7],gorunen_kutu[8][7],gorunen_kutu[9][7]);
+	printf("  |______|______|______|______|______|______|______|______|______|\n");
+	printf("  |      |      |      |      |      |      |      |      |      |\n");
+	printf("8 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][8],gorunen_kutu[2][8],gorunen_kutu[3][8],gorunen_kutu[4][8],gorunen_kutu[5][8],gorunen_kutu[6][8],gorunen_kutu[7][8],gorunen_kutu[8][8],gorunen_kutu[9][8]);
+	printf("  |______|______|______|______|______|______|______|______|______|\n");
+	printf("  |      |      |      |      |      |      |      |      |      |\n");
+	printf("9 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",gorunen_kutu[1][9],gorunen_kutu[2][9],gorunen_kutu[3][9],gorunen_kutu[4][9],gorunen_kutu[5][9],gorunen_kutu[6][9],gorunen_kutu[7][9],gorunen_kutu[8][9],gorunen_kutu[9][9]);
+	printf("  |______|______|______|______|______|______|______|______|______|\n");
+
+	printf("\nbayrak sayaci %d \n",bayraksayaci);
+	printf("\n\n\n\n\n\n\n\n\n");
+	
+	}
+	
+	
+	printf("     1      2      3      4      5       6      7      8      9\n");
+	printf("  _______________________________________________________________\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("1 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][1],kutu[2][1],kutu[3][1],kutu[4][1],kutu[5][1],kutu[6][1],kutu[7][1],kutu[8][1],kutu[9][1]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("2 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][2],kutu[2][2],kutu[3][2],kutu[4][2],kutu[5][2],kutu[6][2],kutu[7][2],kutu[8][2],kutu[9][2]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("3 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][3],kutu[2][3],kutu[3][3],kutu[4][3],kutu[5][3],kutu[6][3],kutu[7][3],kutu[8][3],kutu[9][3]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("4 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][4],kutu[2][4],kutu[3][4],kutu[4][4],kutu[5][4],kutu[6][4],kutu[7][4],kutu[8][4],kutu[9][4]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("5 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][5],kutu[2][5],kutu[3][5],kutu[4][5],kutu[5][5],kutu[6][5],kutu[7][5],kutu[8][5],kutu[9][5]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("6 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][6],kutu[2][6],kutu[3][6],kutu[4][6],kutu[5][6],kutu[6][6],kutu[7][6],kutu[8][6],kutu[9][6]);
+    printf("  |______|______|______|______|______|______|______|______|______|\n");
+    printf("  |      |      |      |      |      |      |      |      |      |\n");
+    printf("7 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][7],kutu[2][7],kutu[3][7],kutu[4][7],kutu[5][7],kutu[6][7],kutu[7][7],kutu[8][7],kutu[9][7]);
+	printf("  |______|______|______|______|______|______|______|______|______|\n");
+	printf("  |      |      |      |      |      |      |      |      |      |\n");
+	printf("8 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][8],kutu[2][8],kutu[3][8],kutu[4][8],kutu[5][8],kutu[6][8],kutu[7][8],kutu[8][8],kutu[9][8]);
+	printf("  |______|______|______|______|______|______|______|______|______|\n");
+	printf("  |      |      |      |      |      |      |      |      |      |\n");
+	printf("9 |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |   %c  |\n",kutu[1][9],kutu[2][9],kutu[3][9],kutu[4][9],kutu[5][9],kutu[6][9],kutu[7][9],kutu[8][9],kutu[9][9]);
+	printf("  |______|______|______|______|______|______|______|______|______|\n");
+	
+	
+		
+	
+	if (kalanmayin==-99)
+	{
+		for(i=0;i<15;i++){
+			
+		printf("\nGAME OVER");			
+		}
+
+
+		
+	}
+	else
+	{
+			
+		for(i=0;i<15;i++){
+			
+		printf("\nWE GOT A WINNER");			
+		}
+		
+		
+	}
+	
+	
+
+	
+	return 0;	
+}
+
+
+
+
